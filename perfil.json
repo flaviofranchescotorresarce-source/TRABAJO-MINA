@@ -1,0 +1,58 @@
+{
+  "_ayuda": "Edita este archivo con tu perfil real. El agente lo usa para ordenar las ofertas. Guarda el archivo y vuelve a ejecutar 'Actualizar ofertas.bat'.",
+
+  "resumen": "Profesional administrativo del sector servicios en campamentos mineros. Experiencia en Sodexo Perú. Busco puestos de administración, recursos humanos, planillas, coordinación de personal y asistencia de operaciones en compañías mineras, contratistas y empresas de energía.",
+
+  "cargos_que_busco": [
+    "asistente de recursos humanos",
+    "administracion de personal",
+    "analista de planillas",
+    "auxiliar administrativo",
+    "asistente de operaciones",
+    "coordinador de personal",
+    "relaciones industriales",
+    "bienestar social",
+    "asistente administrativo",
+    "jefe de administracion",
+    "supervisor de campamento",
+    "administrador de contrato",
+    "practicante profesional",
+    "trainee"
+  ],
+
+  "palabras_clave_extra": [
+    "campamento",
+    "facilities",
+    "alimentacion",
+    "hoteleria",
+    "servicios generales",
+    "bienestar",
+    "planilla",
+    "remuneraciones",
+    "seleccion de personal"
+  ],
+
+  "cargos_que_no_me_sirven": [
+    "conductor",
+    "chofer",
+    "soldador",
+    "mecanico",
+    "electricista",
+    "operador de equipo",
+    "perforista",
+    "geologo",
+    "topografo",
+    "enfermero",
+    "medico",
+    "vigilante",
+    "agente de seguridad",
+    "almacenero",
+    "ayudante de campo",
+    "operario de produccion"
+  ],
+
+  "regiones_preferidas": ["Lima", "Arequipa", "Moquegua", "Tacna", "Ica"],
+
+  "acepto_regimen_campamento": true,
+  "solo_con_fecha_de_cierre": false
+}

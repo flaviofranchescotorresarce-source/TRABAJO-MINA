@@ -1,0 +1,52 @@
+RADAR MINERO - COMO SE ORDENAN LAS OFERTAS
+=========================================
+
+Todo lo que corre aqui es codigo Python normal. No usa inteligencia artificial,
+no consulta ningun modelo, no necesita ninguna cuenta ni clave, y no cuesta
+nada. Funciona sin conexion salvo el momento de descargar las ofertas.
+
+
+EL PUNTAJE
+----------
+Cada oferta recibe una nota de 0 a 100 comparandola con perfil.json:
+
+  + el cargo coincide con lo que buscas       (hasta 45 puntos)
+  + palabras del rubro que dominas            (hasta 15)
+  + esta en una region que prefieres          (10)
+  + es portal oficial de la empresa           (8)
+  + tiene fecha de cierre confirmada          (4)
+  + cierra pronto                             (hasta 12)
+  - el cargo esta en tu lista de descartados  (-40)
+
+En la pagina, el orden por defecto es "Mejor encaje con mi perfil" y cada
+tarjeta muestra debajo por que saco esa nota. Si algo aparece donde no debe,
+la explicacion te dice exactamente que regla lo puso ahi.
+
+
+COMO AJUSTARLO
+--------------
+Abre perfil.json con el Bloc de notas. Es el archivo mas util de la carpeta:
+mientras mejor describas tu experiencia, mejor ordena.
+
+  cargos_que_busco         los puestos que si te sirven
+  palabras_clave_extra     terminos de tu rubro (campamento, planilla...)
+  cargos_que_no_me_sirven  lo que quieres al fondo (soldador, conductor...)
+  regiones_preferidas      donde puedes o quieres trabajar
+  solo_con_fecha_de_cierre ponlo en true si no te interesan las sin plazo
+
+Guarda el archivo y ejecuta "Actualizar ofertas.bat". El cambio se ve al
+recargar la pagina con F5.
+
+
+UNA ADVERTENCIA SOBRE EL PUNTAJE
+--------------------------------
+Son reglas de texto, no criterio. No lee el aviso ni entiende el contexto:
+compara palabras. Un puesto puede encajarte perfecto y sacar poca nota porque
+la empresa lo titulo distinto. Usalo para no perderte lo evidente, no para
+descartar sin mirar.
+
+
+LO QUE NO HACE
+--------------
+No postula por ti. No sube tu CV. No escribe a las empresas. Solo busca,
+ordena y explica; el clic de postular siempre lo das tu.

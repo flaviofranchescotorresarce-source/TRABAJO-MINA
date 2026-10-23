@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar Minero — vacantes activas en minería, energía y petróleo (Perú)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --roca-900:#14191f; --roca-800:#1b2229; --roca-700:#232c35; --roca-600:#2b3742;
+  --linea:#32404c; --texto:#e6ebef; --tenue:#8fa1b0;
+  --cobre:#c9722f; --patina:#35a08e; --azufre:#e8c33b; --acero:#7e8ca0; --mineral:#6e8fa8;
+  --alerta:#d2543f; --estatal:#9080b4;
+  --display:'Archivo',system-ui,sans-serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--roca-900);color:var(--texto);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font-family:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+/* cabecera */
+.cabecera{padding:38px 0 26px;border-bottom:1px solid var(--linea);margin-bottom:8px}
+.estratos{display:flex;height:10px;border-radius:2px;overflow:hidden;margin-bottom:26px}
+.estratos span{flex:1}
+.marca{font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,62px);line-height:.92;letter-spacing:-.03em;text-transform:uppercase;margin:0}
+.marca em{font-style:normal;color:var(--cobre)}
+.bajada{color:var(--tenue);max-width:66ch;margin:14px 0 0}
+.contadores{display:flex;flex-wrap:wrap;gap:26px;margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--tenue)}
+.contadores b{display:block;font-size:24px;color:var(--texto);letter-spacing:-.02em;font-weight:600}
+.contadores b.urg{color:var(--alerta)}
+.sello{margin-top:18px;font-family:var(--mono);font-size:11.5px;color:var(--tenue);letter-spacing:.05em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pulso{width:8px;height:8px;border-radius:50%;background:var(--patina);box-shadow:0 0 0 0 rgba(53,160,142,.6);animation:late 2.4s infinite}
+@keyframes late{0%{box-shadow:0 0 0 0 rgba(53,160,142,.55)}70%{box-shadow:0 0 0 9px rgba(53,160,142,0)}100%{box-shadow:0 0 0 0 rgba(53,160,142,0)}}
+
+/* secciones */
+.seccion{margin-top:44px}
+.rotulo{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--linea);padding-bottom:10px;margin-bottom:20px;flex-wrap:wrap}
+.rotulo h2{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;font-size:20px;margin:0}
+.rotulo .codigo{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.14em}
+.rotulo .nota{margin-left:auto;font-size:12.5px;color:var(--tenue)}
+
+/* controles */
+.campo{flex:1 1 320px;background:var(--roca-900);border:1px solid var(--linea);color:var(--texto);padding:13px 15px;border-radius:3px;font-size:15px;font-family:var(--body)}
+.campo:focus{outline:2px solid var(--cobre);outline-offset:1px}
+.fila-input{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--linea);background:var(--roca-700);color:var(--texto);padding:13px 18px;border-radius:3px;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-family:var(--mono);transition:background .15s,border-color .15s}
+.btn:hover{background:var(--roca-600);border-color:var(--acero)}
+.btn:focus-visible{outline:2px solid var(--azufre);outline-offset:2px}
+.btn.principal{background:var(--cobre);border-color:var(--cobre);color:#150e07}
+.btn.principal:hover{background:#dd8038;border-color:#dd8038}
+.btn:disabled{opacity:.5;cursor:progress}
+.btn.chico{padding:7px 11px;font-size:11px;text-transform:none;letter-spacing:0;font-family:var(--body);font-weight:500}
+.btn.sutil{background:transparent;color:var(--tenue)}
+
+/* pestañas */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tab{display:flex;align-items:center;gap:8px;border:1px solid var(--linea);background:var(--roca-800);color:var(--tenue);padding:8px 13px;border-radius:3px;cursor:pointer;font-size:13px}
+.tab .punto{width:8px;height:8px;border-radius:1px;background:var(--acero)}
+.tab .n{font-family:var(--mono);font-size:11px;opacity:.75}
+.tab[aria-pressed="true"]{color:var(--texto);background:var(--roca-700);border-color:var(--acero)}
+
+/* ====== 01 TABLERO DE OFERTAS EN VIVO ====== */
+.barra{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.barra select{background:var(--roca-900);border:1px solid var(--linea);color:var(--texto);padding:13px 12px;border-radius:3px;font-family:var(--body);font-size:14px;min-width:170px}
+.barra select:focus{outline:2px solid var(--cobre);outline-offset:1px}
+.resumen-filtro{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tenue);margin:0 0 12px}
+.ofertas{display:grid;gap:11px}
+.oferta{
+  background:var(--roca-800);border:1px solid var(--linea);border-left:5px solid var(--acero);
+  border-radius:0 3px 3px 0;padding:15px 17px;display:grid;
+  grid-template-columns:1fr auto;gap:4px 18px;align-items:start;
+}
+.oferta.u0{border-left-color:var(--alerta)}
+.oferta.u1{border-left-color:var(--azufre)}
+.oferta.u2{border-left-color:var(--patina)}
+.oferta.estatal{border-left-color:var(--estatal);border-left-style:dashed}
+.oferta h3{margin:0;font-family:var(--display);font-weight:600;font-size:16.5px;line-height:1.3;grid-column:1}
+.oferta .plazo{
+  grid-column:2;grid-row:1;justify-self:end;white-space:nowrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--linea);padding:4px 9px;border-radius:2px;color:var(--tenue);
+}
+.oferta.u0 .plazo{color:#f0a394;border-color:rgba(210,84,63,.55);background:rgba(210,84,63,.12)}
+.oferta.u1 .plazo{color:#efd67a;border-color:rgba(232,195,59,.45);background:rgba(232,195,59,.09)}
+.oferta.u2 .plazo{color:#7fc9bb;border-color:rgba(53,160,142,.4)}
+.oferta .quien{grid-column:1/-1;font-size:13.5px;color:#c4d0da;margin:2px 0 0}
+.oferta .quien b{font-weight:600;color:var(--texto)}
+.oferta .cronologia{grid-column:1/-1;font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.04em;margin-top:5px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.oferta .cronologia .estimado{color:#6f7f8d}
+.oferta .extracto{grid-column:1/-1;margin:9px 0 0;font-size:13.5px;color:#a9b8c4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.oferta .encaje{grid-column:1/-1;margin:8px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--patina)}
+.oferta .acciones{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.postular{
+  text-decoration:none;background:var(--cobre);border:1px solid var(--cobre);color:#150e07;
+  padding:9px 15px;border-radius:3px;font-size:12.5px;font-weight:600;font-family:var(--mono);
+  letter-spacing:.04em;text-transform:uppercase;transition:background .15s;
+}
+.postular:hover{background:#dd8038}
+.postular:focus-visible{outline:2px solid var(--azufre);outline-offset:2px}
+.etiquetas{display:flex;flex-wrap:wrap;gap:5px}
+.etiqueta{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--tenue);border:1px solid var(--linea);padding:2px 6px;border-radius:2px}
+.mas{display:flex;justify-content:center;margin-top:18px}
+
+/* canales en vivo */
+.canales{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.canal{
+  display:flex;flex-direction:column;gap:6px;text-decoration:none;
+  background:var(--roca-800);border:1px solid var(--linea);border-left:5px solid var(--cobre);
+  border-radius:0 3px 3px 0;padding:14px 16px;transition:background .15s,transform .15s;
+}
+.canal:hover{background:var(--roca-700);transform:translateX(2px)}
+.canal:focus-visible{outline:2px solid var(--azufre);outline-offset:2px}
+.canal .nom{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.canal .flecha{color:var(--cobre);font-family:var(--mono);font-size:14px}
+.canal .desc{font-size:13px;color:var(--tenue);margin:0}
+.canal .origen{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tenue);margin-top:auto;padding-top:6px}
+
+/* buscador */
+.buscador{background:var(--roca-800);border:1px solid var(--linea);border-radius:4px;padding:20px}
+.perfiles{margin-top:16px}
+.perfiles p{margin:0 0 9px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--tenue)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--linea);background:transparent;color:var(--tenue);padding:6px 11px;border-radius:100px;cursor:pointer;font-size:13px;font-family:var(--body)}
+.chip:hover{color:var(--texto);border-color:var(--cobre)}
+.lanzador{display:none;margin-top:18px;border-top:1px dashed var(--linea);padding-top:18px}
+.lanzador.abierto{display:block}
+.portales{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:12px}
+.portal{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--roca-900);border:1px solid var(--linea);border-radius:3px;padding:11px 13px}
+.portal .nom{font-size:13.5px;font-weight:500}
+.portal .sub{font-family:var(--mono);font-size:10.5px;color:var(--tenue);letter-spacing:.05em}
+
+.aviso{margin-top:16px;border-left:3px solid var(--azufre);background:rgba(232,195,59,.07);padding:11px 14px;font-size:13.5px;border-radius:0 3px 3px 0}
+.aviso code{font-family:var(--mono);font-size:12.5px;background:var(--roca-900);padding:2px 6px;border-radius:2px;border:1px solid var(--linea)}
+
+/* empresas */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.fuente{background:var(--roca-800);border:1px solid var(--linea);border-left:5px solid var(--acero);border-radius:0 3px 3px 0;padding:14px 16px;display:flex;flex-direction:column;gap:9px}
+.fuente .arriba{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.fuente h3{margin:0;font-size:15.5px;font-weight:600;font-family:var(--display)}
+.fuente .ley{font-family:var(--mono);font-size:10px;color:var(--tenue);letter-spacing:.1em;white-space:nowrap;padding-top:3px}
+.fuente .desc{font-size:13px;color:var(--tenue);margin:0}
+.fuente .acciones{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}
+.fuente .vivas{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--patina)}
+.vinculo{text-decoration:none;border:1px solid var(--linea);padding:6px 10px;border-radius:3px;font-size:12px;color:var(--tenue);display:inline-block;background:transparent;cursor:pointer;font-family:var(--body)}
+.vinculo:hover{color:var(--texto);border-color:var(--cobre)}
+.vinculo:focus-visible{outline:2px solid var(--azufre);outline-offset:2px}
+.vinculo.oficial{color:var(--texto);border-color:var(--cobre)}
+
+/* seguimiento */
+.tabla{width:100%;border-collapse:collapse;font-size:13.5px}
+.tabla th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tenue);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--linea)}
+.tabla td{padding:9px 10px;border-bottom:1px solid var(--roca-700);vertical-align:middle}
+.tabla tr:hover td{background:var(--roca-800)}
+.tabla select{background:var(--roca-900);color:var(--texto);border:1px solid var(--linea);border-radius:3px;padding:5px 7px;font-family:var(--mono);font-size:11px}
+.vacio{padding:26px;text-align:center;color:var(--tenue);border:1px dashed var(--linea);border-radius:3px}
+.form-seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin-bottom:16px}
+.form-seg input{background:var(--roca-900);border:1px solid var(--linea);color:var(--texto);padding:10px 12px;border-radius:3px;font-family:var(--body);font-size:14px}
+.form-seg input:focus{outline:2px solid var(--cobre);outline-offset:1px}
+.borrar{background:none;border:none;color:var(--tenue);cursor:pointer;font-size:16px;line-height:1;padding:4px 6px}
+.borrar:hover{color:var(--cobre)}
+.pie{margin-top:56px;padding-top:18px;border-top:1px solid var(--linea);color:var(--tenue);font-size:12.5px}
+
+@media (max-width:640px){
+  .wrap{padding:0 14px 60px}
+  .contadores{gap:18px}
+  .oferta{grid-template-columns:1fr}
+  .oferta .plazo{grid-column:1;grid-row:auto;justify-self:start;margin-top:6px}
+  .tabla thead{display:none}
+  .tabla td{display:block;border:none;padding:3px 0}
+  .tabla tr{display:block;border-bottom:1px solid var(--linea);padding:10px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cabecera">
+  <div class="estratos" aria-hidden="true">
+    <span style="background:var(--cobre)"></span><span style="background:var(--mineral)"></span>
+    <span style="background:var(--patina)"></span><span style="background:var(--azufre)"></span>
+    <span style="background:var(--acero)"></span>
+  </div>
+  <h1 class="marca">Radar <em>Minero</em></h1>
+  <p class="bajada">Ofertas vigentes de minería, contratistas, hidrocarburos y energía en Perú, con su fecha de cierre. Cada botón <b>Postular</b> abre la página donde se sube el CV para ese aviso.</p>
+  <div class="contadores">
+    <div><b id="cVigentes">—</b> ofertas vigentes</div>
+    <div><b id="cUrgentes" class="urg">—</b> cierran esta semana</div>
+    <div><b id="cPracticas">—</b> prácticas y programas</div>
+    <div><b id="cOficiales">—</b> en portales oficiales</div>
+    <div><b id="cEstado">—</b> convocatorias del Estado</div>
+    <div><b id="cEmpresas">0</b> empresas del sector</div>
+  </div>
+  <div class="sello"><span class="pulso" aria-hidden="true"></span><span id="selloTexto">cargando ofertas…</span></div>
+</header>
+
+<!-- 01 OFERTAS EN VIVO -->
+<section class="seccion">
+  <div class="rotulo">
+    <span class="codigo">01</span>
+    <h2>Ofertas vigentes</h2>
+    <span class="nota">Ordenadas por encaje con tu <code style="font-family:var(--mono)">perfil.json</code>. Postular abre el formulario donde subes tu CV. Las convocatorias del Estado están en su propia pestaña, aparte del sector.</span>
+  </div>
+
+  <div id="sinDatos" style="display:none">
+    <div class="vacio" style="text-align:left;padding:22px 24px">
+      <p style="margin:0 0 10px;font-family:var(--display);font-size:17px;color:var(--texto)">Todavía no hay ofertas descargadas</p>
+      <p style="margin:0 0 12px">La descarga corre sola cada mañana a las 7:30. Si quieres una ahora mismo, haz doble clic en <code style="font-family:var(--mono);color:var(--cobre)">Actualizar ofertas.bat</code> (está en esta misma carpeta) y espera a que termine. Luego recarga esta página con F5.</p>
+      <p style="margin:0;font-size:13px">Tarda entre dos y cuatro minutos: consulta Computrabajo, Bumeran, El Paisano, LinkedIn y los portales oficiales de las empresas, y lee la fecha de cierre de cada aviso.</p>
+    </div>
+  </div>
+
+  <div id="tableroOfertas" style="display:none">
+    <div class="tabs" id="tabsOfertas"></div>
+    <div class="barra">
+      <input id="oBuscar" class="campo" type="text" placeholder="Filtrar por puesto o empresa: soldador, practicante, planillas…" autocomplete="off">
+      <select id="oRegion" aria-label="Región"></select>
+      <select id="oFuente" aria-label="Fuente"></select>
+      <select id="oPlazo" aria-label="Plazo">
+        <option value="0">Cualquier plazo</option>
+        <option value="3">Cierran en 3 días o menos</option>
+        <option value="7">Cierran esta semana</option>
+        <option value="15">Cierran en 15 días o menos</option>
+      </select>
+      <select id="oOrden" aria-label="Orden">
+        <option value="perfil">Mejor encaje con mi perfil</option>
+        <option value="cierre">Cierre más próximo</option>
+        <option value="nuevo">Publicación más reciente</option>
+        <option value="empresa">Empresa (A-Z)</option>
+      </select>
+    </div>
+    <p class="resumen-filtro" id="oResumen"></p>
+    <div class="ofertas" id="listaOfertas"></div>
+    <div class="mas"><button class="btn sutil" id="btnMas">Ver más ofertas</button></div>
+  </div>
+</section>
+
+<!-- 02 CANALES EN VIVO -->
+<section class="seccion">
+  <div class="rotulo">
+    <span class="codigo">02</span>
+    <h2>Canales que se actualizan solos</h2>
+    <span class="nota">Listas y bolsas oficiales que cambian a diario. Un clic y estás en el aviso.</span>
+  </div>
+  <div class="tabs" id="tabsCanales"></div>
+  <div class="canales" id="canales"></div>
+</section>
+
+<!-- 03 BUSCAR -->
+<section class="seccion">
+  <div class="rotulo">
+    <span class="codigo">03</span>
+    <h2>Buscar un puesto</h2>
+    <span class="nota">Escribes una vez y se abre la búsqueda ya cargada en cada portal.</span>
+  </div>
+  <div class="buscador">
+    <div class="fila-input">
+      <input id="q" class="campo" type="text" placeholder="Ej.: asistente de recursos humanos" autocomplete="off">
+      <button id="btnPortales" class="btn principal">Abrir en portales</button>
+    </div>
+    <div class="perfiles">
+      <p>Perfiles frecuentes</p>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="lanzador" id="lanzador">
+      <p style="margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--tenue)">Buscar <span id="qEco"></span> en</p>
+      <div class="portales" id="portales"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 EMPRESAS -->
+<section class="seccion">
+  <div class="rotulo">
+    <span class="codigo">04</span>
+    <h2>Empresas del sector</h2>
+    <span class="nota">Portal = bolsa oficial verificada · el contador verde indica avisos suyos descargados hoy</span>
+  </div>
+  <div class="fila-input" style="margin-bottom:14px">
+    <input id="filtroTexto" class="campo" type="text" placeholder="Filtrar por nombre, mineral, región…" autocomplete="off">
+  </div>
+  <div class="tabs" id="tabsEmpresas"></div>
+  <div class="rejilla" id="rejilla"></div>
+</section>
+
+<!-- 05 SEGUIMIENTO -->
+<section class="seccion">
+  <div class="rotulo">
+    <span class="codigo">05</span>
+    <h2>Mis postulaciones</h2>
+    <span class="nota">Se guarda en este navegador. Descarga el CSV para respaldo.</span>
+  </div>
+  <div class="form-seg">
+    <input id="sEmpresa" placeholder="Empresa">
+    <input id="sPuesto" placeholder="Puesto">
+    <input id="sFuente" placeholder="Fuente">
+    <input id="sLink" placeholder="Enlace del aviso">
+    <button class="btn" id="btnAgregar">Agregar</button>
+  </div>
+  <div id="contSeg"></div>
+  <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn chico" id="btnCSV">Descargar CSV</button>
+    <button class="btn chico" id="btnLimpiar">Borrar todo</button>
+  </div>
+</section>
+
+<footer class="pie">
+  Las ofertas vienen de Computrabajo, Bumeran, El Paisano, LinkedIn y los portales oficiales de las propias empresas (Southern, Poderosa, Antapaccay, Aenza, Luz del Sur y otros). La fecha de cierre marcada como <em>confirmada</em> es la que publica el portal; la <em>estimada</em> asume la vigencia habitual de 30 días desde la publicación; los portales oficiales no publican plazo, sus vacantes siguen abiertas mientras aparezcan ahí. Ninguna postulación se envía desde aquí: confirma requisitos, régimen y cierre en el aviso original. La lista se refresca sola cada mañana; para forzarla, ejecuta <code style="font-family:var(--mono)">Actualizar ofertas.bat</code>.
+</footer>
+</div>
+
+<!-- datos descargados por actualizar_ofertas.py -->
+<script src="ofertas.js" onerror="window.OFERTAS=null"></script>
+<script>
+const EM = 'https://www.empleosmineria.pe';
+
+/* ============ CANALES EN VIVO ============ */
+const GRUPOS = {
+  perfil:   {nom:'Para tu perfil',      color:'var(--cobre)'},
+  region:   {nom:'Por región',          color:'var(--mineral)'},
+  practicas:{nom:'Prácticas y trainees',color:'var(--azufre)'},
+  oficial:  {nom:'Portales oficiales',  color:'var(--patina)'}
+};
+
+const CANALES = [
+  // --- por perfil / carrera ---
+  {g:'perfil', n:'Administración', u:EM+'/trabajos-para-ADMINISTRACION-1', o:'empleosmineria.pe', d:'Vacantes administrativas de mineras y contratistas, ordenadas por fecha.'},
+  {g:'perfil', n:'Relaciones Industriales', u:EM+'/trabajos-para-RELACIONES-INDUSTRIALES-114', o:'empleosmineria.pe', d:'Gestión de personal, planillas y relaciones laborales en mina.'},
+  {g:'perfil', n:'Ingeniería Industrial', u:EM+'/trabajos-para-INGENIERIA-INDUSTRIAL-15', o:'empleosmineria.pe', d:'Procesos, planeamiento y mejora continua en operaciones mineras.'},
+  {g:'perfil', n:'Contabilidad', u:EM+'/trabajos-para-CONTABILIDAD-2', o:'empleosmineria.pe', d:'Costos, tesorería y contabilidad de operación.'},
+  {g:'perfil', n:'Finanzas', u:EM+'/trabajos-para-FINANZAS-38', o:'empleosmineria.pe', d:'Control de gestión y presupuestos.'},
+  {g:'perfil', n:'Psicología', u:EM+'/trabajos-para-PSICOLOGIA-31', o:'empleosmineria.pe', d:'Selección, bienestar y clima laboral en unidades mineras.'},
+  {g:'perfil', n:'Secretariado', u:EM+'/trabajos-para-SECRETARIADO-SECRETARIA-22', o:'empleosmineria.pe', d:'Asistencia administrativa en sede y campamento.'},
+  {g:'perfil', n:'Ingeniería de Minas', u:EM+'/trabajos-para-INGENIERIA-DE-MINAS-110', o:'empleosmineria.pe', d:'Operación mina, planeamiento y supervisión.'},
+  {g:'perfil', n:'Ingeniería Petrolera', u:EM+'/trabajos-para-INGENIERIA-PETROLERA-109', o:'empleosmineria.pe', d:'Lotes, refinerías y plantas de gas.'},
+  {g:'perfil', n:'Bachilleres', u:EM+'/trabajos-mina-para-bachilleres-9', o:'empleosmineria.pe', d:'Todo lo que pide grado de bachiller, sin exigir título.'},
+  {g:'perfil', n:'Egresados universitarios', u:EM+'/trabajos-mina-para-egresados-universitarios-7', o:'empleosmineria.pe', d:'Puestos de entrada para recién egresados.'},
+  {g:'perfil', n:'Todas las ofertas', u:EM+'/trabajos', o:'empleosmineria.pe', d:'El listado completo del portal, lo último publicado primero.'},
+
+  // --- por región ---
+  {g:'region', n:'Arequipa', u:EM+'/trabajos-en-arequipa-4', o:'empleosmineria.pe', d:'Cerro Verde, contratistas del sur y sedes administrativas.'},
+  {g:'region', n:'Moquegua', u:EM+'/trabajos-en-moquegua-18', o:'empleosmineria.pe', d:'Cuajone, Ilo, Quellaveco y sus contratistas.'},
+  {g:'region', n:'Tacna', u:EM+'/trabajos-en-tacna-23', o:'empleosmineria.pe', d:'Toquepala y operaciones del extremo sur.'},
+  {g:'region', n:'Cusco', u:EM+'/trabajos-en-cusco-8', o:'empleosmineria.pe', d:'Antapaccay, Constancia y el corredor minero.'},
+  {g:'region', n:'Apurímac', u:EM+'/trabajos-en-apurimac-3', o:'empleosmineria.pe', d:'Las Bambas y proyectos asociados.'},
+  {g:'region', n:'Puno', u:EM+'/trabajos-en-puno-21', o:'empleosmineria.pe', d:'San Rafael y operaciones del altiplano.'},
+  {g:'region', n:'Lima', u:EM+'/trabajos-en-lima-15', o:'empleosmineria.pe', d:'Sedes corporativas y puestos de oficina del sector.'},
+  {g:'region', n:'Áncash', u:EM+'/trabajos-en-ancash-2', o:'empleosmineria.pe', d:'Antamina y su cadena de contratistas.'},
+  {g:'region', n:'Cajamarca', u:EM+'/trabajos-en-cajamarca-6', o:'empleosmineria.pe', d:'Yanacocha, Cerro Corona y proyectos del norte.'},
+  {g:'region', n:'Junín', u:EM+'/trabajos-en-junin-12', o:'empleosmineria.pe', d:'Toromocho y la sierra central.'},
+  {g:'region', n:'La Libertad', u:EM+'/trabajos-en-la-libertad-13', o:'empleosmineria.pe', d:'Pataz y la minería aurífera subterránea.'},
+  {g:'region', n:'Ica', u:EM+'/trabajos-en-ica-11', o:'empleosmineria.pe', d:'Marcona, Mina Justa y la costa sur.'},
+  {g:'region', n:'Piura', u:EM+'/trabajos-en-piura-20', o:'empleosmineria.pe', d:'Talara, lotes petroleros y proyectos del norte.'},
+  {g:'region', n:'Pasco', u:EM+'/trabajos-en-pasco-19', o:'empleosmineria.pe', d:'Operaciones polimetálicas de la sierra central.'},
+
+  // --- prácticas y programas ---
+  {g:'practicas', n:'Prácticas preprofesionales', u:EM+'/practicas-preprofesionales', o:'empleosmineria.pe', d:'Convocatorias vigentes para estudiantes, en mina y en sede.'},
+  {g:'practicas', n:'Prácticas profesionales', u:EM+'/practicas-profesionales', o:'empleosmineria.pe', d:'Para egresados y bachilleres dentro del primer año.'},
+  {g:'practicas', n:'Estudiantes universitarios', u:EM+'/trabajos-mina-para-estudiantes-universitarios-6', o:'empleosmineria.pe', d:'Todo lo abierto a quienes siguen estudiando.'},
+  {g:'practicas', n:'Estudiantes técnicos', u:EM+'/trabajos-mina-para-estudiantes-tecnicos-3', o:'empleosmineria.pe', d:'Prácticas y puestos de institutos técnicos.'},
+  {g:'practicas', n:'Trainees y graduados', u:'https://www.linkedin.com/jobs/search/?keywords=trainee%20miner%C3%ADa%20OR%20graduados%20OR%20j%C3%B3venes%20profesionales&location=Per%C3%BA', o:'LinkedIn', d:'Programas de jóvenes profesionales publicados por las propias empresas.'},
+  {g:'practicas', n:'Prácticas en energía y petróleo', u:'https://www.linkedin.com/jobs/search/?keywords=practicante%20energ%C3%ADa%20petr%C3%B3leo%20gas&location=Per%C3%BA', o:'LinkedIn', d:'Prácticas en generadoras, distribuidoras y lotes.'},
+  {g:'practicas', n:'Semilleros y becas del gremio', u:'https://www.snmpe.org.pe', o:'SNMPE', d:'Sociedad Nacional de Minería, Petróleo y Energía: becas, eventos y convocatorias.'},
+  {g:'practicas', n:'Prácticas en el Estado', u:'https://www.gob.pe/busquedas?contenido[]=empleos&institucion[]=minem', o:'gob.pe', d:'MINEM, Ingemmet y Osinergmin publican prácticas y CAS aquí.'},
+
+  // --- portales oficiales verificados ---
+  {g:'oficial', n:'Southern Perú — bolsa', u:'https://southernperu.hiringroom.com/jobs', o:'Hiring Room', d:'Vacantes vigentes de SPCC: Toquepala, Cuajone e Ilo.'},
+  {g:'oficial', n:'Southern Perú — CAPPER', u:'https://capper.southernperu.com.pe/capper/ListadoOfertas.aspx?tipo=1', o:'southernperu.com.pe', d:'Sistema propio de convocatorias, incluye prácticas.'},
+  {g:'oficial', n:'Cerro Verde — bolsa', u:'https://cerroverde.hiringroom.com/jobs', o:'Hiring Room', d:'Único canal autorizado de postulación de Cerro Verde.'},
+  {g:'oficial', n:'Cerro Verde — trabaja con nosotros', u:'https://www.cerroverde.pe/mineria-cobre-molibdeno-arequipa-minera-trabaja-con-nosotros', o:'cerroverde.pe', d:'Página oficial con avisos de fraude y acceso al registro.'},
+  {g:'oficial', n:'Antamina — Más Talento', u:'https://mastalento.antamina.com/', o:'antamina.com', d:'Plataforma oficial de postulación de Antamina.'},
+  {g:'oficial', n:'Las Bambas', u:'https://www.lasbambas.com/seccion-trabaja-con-nosotros', o:'lasbambas.com', d:'Convocatorias de MMG Las Bambas, Apurímac.'},
+  {g:'oficial', n:'Buenaventura', u:'https://trabajaconnosotros.buenaventura.pe/', o:'buenaventura.pe', d:'Bolsa oficial del grupo, todas sus unidades.'},
+  {g:'oficial', n:'Minera Poderosa', u:'https://minerapoderosa.hiringroom.com/jobs', o:'Hiring Room', d:'Vacantes de la operación aurífera en Pataz.'},
+  {g:'oficial', n:'Repsol', u:'https://www.repsol.com/es/empleo/index.cshtml', o:'repsol.com', d:'Empleo y prácticas del grupo, incluye Perú.'},
+  {g:'oficial', n:'Bolsa del Estado', u:'https://www.gob.pe/institucion/servir/campa%C3%B1as/1071-busca-empleo-en-el-estado', o:'gob.pe', d:'Convocatorias CAS de MINEM, Osinergmin, Ingemmet y Activos Mineros.'},
+  {g:'oficial', n:'Directorio de empresas', u:EM+'/empresas', o:'empleosmineria.pe', d:'Todas las empresas que publican en el portal, con sus avisos.'},
+  {g:'oficial', n:'Minería, petróleo y gas', u:'https://www.bumeran.com.pe/empleos-area-mineria-petroleo-y-gas-subarea-mineria-petroleo-gas.html', o:'Bumeran', d:'Área completa del sector en Bumeran.'}
+];
+
+/* ============ EMPRESAS ============ */
+const CATS = {
+  minera:     {nom:'Compañías mineras',        color:'var(--cobre)'},
+  contratista:{nom:'Contratistas y servicios', color:'var(--mineral)'},
+  energia:    {nom:'Energía, petróleo y gas',  color:'var(--patina)'}
+};
+
+const EMPRESAS = [
+  {n:'Southern Perú Copper', cat:'minera', slug:'southern-peru-copper', portal:'https://southernperu.hiringroom.com/jobs', tags:['cobre','Toquepala','Cuajone','Ilo'], d:'Operaciones en Moquegua y Tacna, fundición y refinería en Ilo.'},
+  {n:'Sociedad Minera Cerro Verde', cat:'minera', slug:'cerro-verde', portal:'https://cerroverde.hiringroom.com/jobs', tags:['cobre','Arequipa'], d:'Mayor empleador minero de Arequipa.'},
+  {n:'Compañía Minera Antamina', cat:'minera', slug:'antamina', portal:'https://mastalento.antamina.com/', tags:['cobre','zinc','Áncash'], d:'La mayor operación polimetálica del país.'},
+  {n:'Minera Las Bambas (MMG)', cat:'minera', slug:'las-bambas', portal:'https://www.lasbambas.com/seccion-trabaja-con-nosotros', tags:['cobre','Apurímac'], d:'Gran minería con fuerte demanda administrativa en campamento.'},
+  {n:'Compañía de Minas Buenaventura', cat:'minera', slug:'buenaventura', portal:'https://trabajaconnosotros.buenaventura.pe/', tags:['oro','plata','multiunidad'], d:'Grupo peruano con varias unidades en operación.'},
+  {n:'Compañía Minera Poderosa', cat:'minera', slug:'poderosa', portal:'https://minerapoderosa.hiringroom.com/jobs', tags:['oro','La Libertad'], d:'Minería subterránea de oro en Pataz.'},
+  {n:'Anglo American Quellaveco', cat:'minera', slug:'quellaveco', tags:['cobre','Moquegua'], d:'Operación reciente con programa de graduados.'},
+  {n:'Nexa Resources Perú', cat:'minera', slug:'nexa-resources', tags:['zinc','Pasco','Lima'], d:'Refinería de Cajamarquilla y unidades de la sierra central.'},
+  {n:'Minsur', cat:'minera', slug:'minsur', tags:['estaño','Puno'], d:'Grupo Breca; unidad San Rafael y fundición Pisco.'},
+  {n:'Marcobre — Mina Justa', cat:'minera', slug:'marcobre', tags:['cobre','Ica'], d:'Operación cuprífera en Nasca.'},
+  {n:'Volcan Compañía Minera', cat:'minera', slug:'volcan', tags:['polimetálica','Junín','Pasco'], d:'Unidades en la sierra central.'},
+  {n:'Glencore Antapaccay', cat:'minera', slug:'antapaccay', tags:['cobre','Cusco','Espinar'], d:'Operación cuprífera del grupo Glencore.'},
+  {n:'Hudbay Perú — Constancia', cat:'minera', slug:'hudbay', tags:['cobre','Cusco'], d:'Operación en Chumbivilcas.'},
+  {n:'Minera Chinalco Perú', cat:'minera', slug:'chinalco', tags:['cobre','Junín','Toromocho'], d:'Mina Toromocho en Morococha.'},
+  {n:'Minera Yanacocha', cat:'minera', slug:'yanacocha', tags:['oro','Cajamarca'], d:'Operación aurífera y proyecto Sulfuros.'},
+  {n:'Gold Fields — Cerro Corona', cat:'minera', slug:'gold-fields', tags:['oro','cobre','Cajamarca'], d:'Operación en Hualgayoc.'},
+  {n:'Hochschild Mining', cat:'minera', slug:'hochschild', tags:['plata','Ayacucho','Arequipa'], d:'Unidades Inmaculada y Pallancata.'},
+  {n:'Shougang Hierro Perú', cat:'minera', slug:'shougang', tags:['hierro','Ica','Marcona'], d:'Único productor de hierro del país.'},
+  {n:'Consorcio Minero Horizonte', cat:'minera', slug:'consorcio-minero-horizonte', tags:['oro','La Libertad'], d:'Minería subterránea de oro en Pataz.'},
+  {n:'MARSA', cat:'minera', slug:'marsa', tags:['oro','La Libertad'], d:'Minera Aurífera Retamas, operación subterránea.'},
+  {n:'Alpayana', cat:'minera', slug:'alpayana', tags:['polimetálica','Junín'], d:'Unidades Morococha y Casapalca.'},
+
+  {n:'STRACON', cat:'contratista', slug:'stracon', tags:['contrato minero integral'], d:'Operación y mantenimiento de minas para terceros.'},
+  {n:'AESA (Grupo Breca)', cat:'contratista', slug:'aesa', tags:['subterránea','superficie'], d:'Contratista de operaciones mineras y obras.'},
+  {n:'San Martín Contratistas', cat:'contratista', slug:'san-martin-contratistas', tags:['movimiento de tierras'], d:'Contratista minero y de construcción a nivel nacional.'},
+  {n:'JJC Contratistas Generales', cat:'contratista', slug:'jjc', tags:['construcción','proyectos'], d:'Obras civiles y montaje para minería y energía.'},
+  {n:'COSAPI', cat:'contratista', slug:'cosapi', tags:['EPC','construcción'], d:'Proyectos EPC en minería, energía e infraestructura.'},
+  {n:'AENZA', cat:'contratista', slug:'aenza', tags:['ingeniería','energía'], d:'Grupo con filiales de construcción, energía y servicios.'},
+  {n:'Mota-Engil Perú', cat:'contratista', slug:'mota-engil', tags:['tajo abierto'], d:'Contratista de obras y minería a tajo abierto.'},
+  {n:'Ferreycorp / Ferreyros', cat:'contratista', slug:'ferreyros', tags:['equipos','Caterpillar'], d:'Maquinaria minera; muchas plazas administrativas y trainees.'},
+  {n:'Komatsu-Mitsui Maquinarias', cat:'contratista', slug:'komatsu-mitsui', tags:['equipos','mantenimiento'], d:'Servicio a flota minera en unidades del sur y centro.'},
+  {n:'IESA', cat:'contratista', slug:'iesa', tags:['subterránea'], d:'Contratista especializado en minería subterránea.'},
+  {n:'ZICSA Contratistas', cat:'contratista', slug:'zicsa', tags:['subterránea','obras'], d:'Servicios mineros y de construcción.'},
+  {n:'Confipetrol Andina', cat:'contratista', slug:'confipetrol', tags:['mantenimiento','plantas'], d:'Mantenimiento industrial en unidades mineras y energéticas.'},
+  {n:'RESEMIN', cat:'contratista', slug:'resemin', tags:['equipos','subterránea'], d:'Fabricante peruano de equipos de perforación subterránea.'},
+  {n:'ENAEX Perú', cat:'contratista', slug:'enaex', tags:['voladura','explosivos'], d:'Servicios de fragmentación de roca y voladura.'},
+  {n:'Sodexo Perú', cat:'contratista', slug:'sodexo', tags:['facilities','campamentos'], d:'Alimentación y servicios en campamentos mineros y energéticos.'},
+  {n:'Newrest Perú', cat:'contratista', slug:'newrest', tags:['facilities','campamentos'], d:'Servicios de campamento en operaciones remotas.'},
+  {n:'SGS del Perú', cat:'contratista', slug:'sgs', tags:['laboratorio','certificación'], d:'Laboratorios e inspección para minería.'},
+  {n:'Bureau Veritas Perú', cat:'contratista', slug:'bureau-veritas', tags:['laboratorio','certificación'], d:'Ensayos, inspección y certificación.'},
+  {n:'Ransa', cat:'contratista', slug:'ransa', tags:['logística','almacenes'], d:'Operador logístico con almacenes en unidades mineras.'},
+  {n:'Unimaq', cat:'contratista', slug:'unimaq', tags:['equipos','Ferreycorp'], d:'Maquinaria ligera para minería y construcción.'},
+  {n:'Servosa', cat:'contratista', slug:'servosa', tags:['transporte','minería'], d:'Transporte de carga y personal para operaciones mineras.'},
+
+  {n:'Repsol Perú', cat:'energia', slug:'repsol', portal:'https://www.repsol.com/es/empleo/index.cshtml', tags:['petróleo','La Pampilla','Lote 57'], d:'Exploración y producción, refino y estaciones de servicio.'},
+  {n:'Pluspetrol Perú', cat:'energia', slug:'pluspetrol', tags:['gas','Camisea','Cusco'], d:'Operador de los lotes 88 y 56.'},
+  {n:'PETROPERÚ', cat:'energia', slug:'petroperu', tags:['estatal','Talara'], d:'Refinería de Talara, Oleoducto Norperuano y comercialización.'},
+  {n:'PERU LNG', cat:'energia', slug:'peru-lng', tags:['GNL','Pampa Melchorita'], d:'Planta de licuefacción y terminal marítimo en Cañete.'},
+  {n:'SAVIA Perú', cat:'energia', slug:'savia', tags:['petróleo','zócalo','Piura'], d:'Producción costa afuera en el noroeste.'},
+  {n:'GMP', cat:'energia', slug:'gmp', tags:['petróleo','gas'], d:'Producción de crudo y plantas de procesamiento de gas.'},
+  {n:'Cálidda', cat:'energia', slug:'calidda', tags:['gas natural','Lima'], d:'Distribuidora de gas natural en Lima y Callao.'},
+  {n:'ENGIE Energía Perú', cat:'energia', slug:'engie', tags:['generación','renovables'], d:'Generación térmica y renovable.'},
+  {n:'Kallpa Generación', cat:'energia', slug:'kallpa', tags:['generación','Chilca'], d:'Central térmica de ciclo combinado.'},
+  {n:'Orygen', cat:'energia', slug:'orygen', tags:['generación','hidro'], d:'Ex Enel Generación Perú: hidroeléctricas y térmicas.'},
+  {n:'Statkraft Perú', cat:'energia', slug:'statkraft', tags:['hidroeléctrica'], d:'Generación hidroeléctrica.'},
+  {n:'ISA REP', cat:'energia', slug:'rep', tags:['transmisión'], d:'Transmisión eléctrica a nivel nacional.'},
+  {n:'Luz del Sur', cat:'energia', slug:'luz-del-sur', tags:['distribución','Lima'], d:'Distribuidora eléctrica del sur de Lima.'},
+  {n:'Celepsa', cat:'energia', slug:'celepsa', tags:['hidroeléctrica','Cañete'], d:'Generación hidroeléctrica del grupo UNACEM.'},
+  {n:'Osinergmin', cat:'energia', slug:'osinergmin', tags:['regulador','público'], d:'Regulador de energía y minería, con convocatorias CAS frecuentes.'}
+];
+
+const PERFILES = [
+  'asistente de recursos humanos',
+  'administración de personal',
+  'analista de planillas',
+  'auxiliar administrativo minería',
+  'asistente de operaciones',
+  'practicante profesional',
+  'trainee jóvenes profesionales',
+  'coordinador de personal'
+];
+
+/* ============ UTILIDADES ============ */
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slugify = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const gsearch = q => 'https://www.google.com/search?q='+encodeURIComponent(q);
+const hoy = () => new Date().toISOString().slice(0,10);
+const sinTildes = s => String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic'];
+function fechaCorta(iso){
+  if(!iso) return '';
+  const p = iso.split('-');
+  if(p.length!==3) return iso;
+  return `${p[2]} ${MESES[parseInt(p[1],10)-1]||''}`;
+}
+function textoPlazo(o){
+  const d = o.dias;
+  if(d===null||d===undefined) return o.oficial ? 'Vigente · sin plazo publicado' : 'Sin fecha de cierre';
+  if(d<=0) return 'Cierra hoy';
+  if(d===1) return 'Cierra mañana';
+  if(d<=30) return `Cierra en ${d} días`;
+  return `Cierra en ${Math.round(d/7)} semanas`;
+}
+const nivelUrgencia = d => (d===null||d===undefined) ? 3 : (d<=3 ? 0 : (d<=7 ? 1 : 2));
+
+/* ============ 01 OFERTAS EN VIVO ============ */
+const DATOS = (typeof window.OFERTAS !== 'undefined' && window.OFERTAS) ? window.OFERTAS : null;
+const OFS = DATOS ? (DATOS.ofertas||[]) : [];
+
+const CAT_OFERTA = {
+  todas:      {nom:'Todo el sector',            color:'var(--texto)'},
+  practicas:  {nom:'Prácticas y programas',     color:'var(--azufre)'},
+  minera:     {nom:'Compañías mineras',         color:'var(--cobre)'},
+  contratista:{nom:'Contratistas mineras',      color:'var(--mineral)'},
+  energia:    {nom:'Hidrocarburos y energía',   color:'var(--patina)'},
+  oficial:    {nom:'Portales oficiales',        color:'var(--acero)'},
+  estado:     {nom:'Convocatorias del Estado',  color:'var(--estatal)'}
+};
+// 'estado' vive aparte: no entra en "Todo el sector" ni en las demás pestañas
+const esEstatal = o => (o.cats||[]).includes('estado');
+
+let catOferta='todas', mostradas=0;
+const PASO=24;
+
+const ofertasFiltradas = () => {
+  const txt = sinTildes(document.getElementById('oBuscar').value.trim());
+  const reg = document.getElementById('oRegion').value;
+  const fue = document.getElementById('oFuente').value;
+  const plazo = parseInt(document.getElementById('oPlazo').value,10);
+  const orden = document.getElementById('oOrden').value;
+
+  let l = OFS.filter(o=>{
+    if(catOferta==='todas' ? esEstatal(o) : !(o.cats||[]).includes(catOferta)) return false;
+    if(reg && o.region!==reg) return false;
+    if(fue && o.fuente!==fue) return false;
+    if(plazo && !(o.dias!==null && o.dias!==undefined && o.dias<=plazo)) return false;
+    if(txt && !sinTildes(`${o.puesto} ${o.empresa} ${o.ubicacion}`).includes(txt)) return false;
+    return true;
+  });
+  if(orden==='nuevo') l.sort((a,b)=>String(b.publicado||'').localeCompare(String(a.publicado||'')));
+  else if(orden==='empresa') l.sort((a,b)=>String(a.empresa||'').localeCompare(String(b.empresa||''),'es'));
+  else if(orden==='perfil') l.sort((a,b)=>
+    ((b.puntaje??0)-(a.puntaje??0)) || ((a.dias??999)-(b.dias??999)));
+  else l.sort((a,b)=>(a.dias??999)-(b.dias??999));
+  return l;
+};
+
+function pintarTabsOfertas(){
+  const cuenta = k => k==='todas' ? OFS.filter(o=>!esEstatal(o)).length
+                                  : OFS.filter(o=>(o.cats||[]).includes(k)).length;
+  document.getElementById('tabsOfertas').innerHTML = Object.keys(CAT_OFERTA).map(k=>`
+    <button class="tab" data-c="${k}" aria-pressed="${k===catOferta}">
+      <span class="punto" style="background:${CAT_OFERTA[k].color}"></span>${CAT_OFERTA[k].nom}<span class="n">${cuenta(k)}</span>
+    </button>`).join('');
+  document.querySelectorAll('#tabsOfertas .tab').forEach(t=>t.addEventListener('click',()=>{
+    catOferta=t.dataset.c; mostradas=0; pintarTabsOfertas(); pintarOfertas();
+  }));
+}
+
+function tarjetaOferta(o){
+  const u = nivelUrgencia(o.dias);
+  const exacta = o.cierra_exacta;
+  const cronologia = [
+    o.publicado ? `Publicado ${fechaCorta(o.publicado)}` : '',
+    o.cierra ? `Cierra ${fechaCorta(o.cierra)} <span class="${exacta?'':'estimado'}">(${exacta?'confirmada':'estimada'})</span>` : '',
+    o.sueldo ? esc(o.sueldo) : '',
+    o.fuente ? esc(o.fuente) : ''
+  ].filter(Boolean).map(x=>`<span>${x}</span>`).join('');
+  const etiquetas = (o.cats||[]).filter(c=>CAT_OFERTA[c]&&c!=='oficial').map(c=>`<span class="etiqueta">${CAT_OFERTA[c].nom}</span>`).join('');
+  return `
+  <article class="oferta u${u}${esEstatal(o)?' estatal':''}">
+    <h3>${esc(o.puesto)}</h3>
+    <span class="plazo">${textoPlazo(o)}</span>
+    <p class="quien"><b>${esc(o.empresa||'Empresa no indicada')}</b>${o.ubicacion?' · '+esc(o.ubicacion):''}</p>
+    <div class="cronologia">${cronologia}</div>
+    ${o.puntaje>=25?`<p class="encaje" title="${esc((o.motivos||[]).join(' · '))}">Encaje ${o.puntaje}/100 — ${esc((o.motivos||[]).slice(0,3).join(' · '))}</p>`:''}
+    ${o.resumen?`<p class="extracto">${esc(o.resumen)}</p>`:''}
+    <div class="acciones">
+      <a class="postular" href="${esc(o.postular||o.url)}" target="_blank" rel="noopener">Postular · subir CV →</a>
+      <a class="vinculo" href="${esc(o.url)}" target="_blank" rel="noopener">Ver aviso completo</a>
+      <button class="vinculo" data-guardar='${esc(JSON.stringify({empresa:o.empresa,puesto:o.puesto,fuente:o.fuente,link:o.url}))}'>Guardar en mis postulaciones</button>
+      <span class="etiquetas" style="margin-left:auto">${etiquetas}</span>
+    </div>
+  </article>`;
+}
+
+function pintarOfertas(){
+  const l = ofertasFiltradas();
+  if(!mostradas) mostradas = PASO;
+  const visibles = l.slice(0, mostradas);
+  const cont = document.getElementById('listaOfertas');
+
+  document.getElementById('oResumen').textContent =
+    l.length ? `Mostrando ${visibles.length} de ${l.length} ofertas` : '';
+
+  cont.innerHTML = l.length
+    ? visibles.map(tarjetaOferta).join('')
+    : '<div class="vacio">Ningún aviso coincide con ese filtro. Prueba con otra categoría, quita la región o amplía el plazo.</div>';
+
+  cont.querySelectorAll('[data-guardar]').forEach(b=>b.addEventListener('click',()=>{
+    try{ agregar(JSON.parse(b.dataset.guardar)); }catch(e){}
+    b.textContent='Guardado ✓'; b.disabled=true; b.style.color='var(--patina)';
+  }));
+
+  document.getElementById('btnMas').style.display = (mostradas < l.length) ? '' : 'none';
+}
+
+function arrancarOfertas(){
+  if(!OFS.length){
+    document.getElementById('sinDatos').style.display='';
+    document.getElementById('selloTexto').textContent = 'sin datos — ejecuta Actualizar ofertas.bat';
+    document.querySelector('.pulso').style.background = 'var(--alerta)';
+    ['cVigentes','cUrgentes','cPracticas','cOficiales','cEstado'].forEach(id=>document.getElementById(id).textContent='0');
+    return;
+  }
+  document.getElementById('tableroOfertas').style.display='';
+
+  const regiones = [...new Set(OFS.map(o=>o.region).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  document.getElementById('oRegion').innerHTML =
+    '<option value="">Todas las regiones</option>' +
+    regiones.map(r=>`<option value="${esc(r)}">${esc(r)} (${OFS.filter(o=>o.region===r).length})</option>`).join('');
+
+  const fuentes = [...new Set(OFS.map(o=>o.fuente).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  document.getElementById('oFuente').innerHTML =
+    '<option value="">Todas las fuentes</option>' +
+    fuentes.map(f=>`<option value="${esc(f)}">${esc(f)}</option>`).join('');
+
+  const sector = OFS.filter(o=>!esEstatal(o));
+  document.getElementById('cVigentes').textContent = sector.length;
+  document.getElementById('cUrgentes').textContent = sector.filter(o=>o.dias!==null&&o.dias!==undefined&&o.dias<=7).length;
+  document.getElementById('cPracticas').textContent = OFS.filter(o=>(o.cats||[]).includes('practicas')).length;
+  document.getElementById('cOficiales').textContent = OFS.filter(o=>o.oficial).length;
+  document.getElementById('cEstado').textContent = OFS.filter(esEstatal).length;
+  const detalle = fuentes.map(f=>`${f} ${OFS.filter(o=>o.fuente===f).length}`).join(' · ');
+  const orden = sector.some(o=>o.puntaje>0) ? ' · ordenadas por tu perfil.json' : '';
+  document.getElementById('selloTexto').textContent =
+    `datos del ${DATOS.actualizado} · ${detalle}${orden} · se actualiza solo cada mañana`;
+
+  ['oBuscar','oRegion','oFuente','oPlazo','oOrden'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener(id==='oBuscar'?'input':'change',()=>{ mostradas=0; pintarOfertas(); });
+  });
+  document.getElementById('btnMas').addEventListener('click',()=>{ mostradas+=PASO; pintarOfertas(); });
+
+  pintarTabsOfertas();
+  pintarOfertas();
+}
+
+/* ============ 02 CANALES ============ */
+let grupoActivo = 'perfil';
+
+function pintarTabsCanales(){
+  const items = Object.keys(GRUPOS).map(k=>({k, nom:GRUPOS[k].nom, color:GRUPOS[k].color, n:CANALES.filter(c=>c.g===k).length}));
+  document.getElementById('tabsCanales').innerHTML = items.map(i=>`
+    <button class="tab" data-g="${i.k}" aria-pressed="${i.k===grupoActivo}">
+      <span class="punto" style="background:${i.color}"></span>${i.nom}<span class="n">${i.n}</span>
+    </button>`).join('');
+  document.querySelectorAll('#tabsCanales .tab').forEach(t=>t.addEventListener('click',()=>{
+    grupoActivo = t.dataset.g; pintarTabsCanales(); pintarCanales();
+  }));
+}
+
+function pintarCanales(){
+  const color = GRUPOS[grupoActivo].color;
+  document.getElementById('canales').innerHTML = CANALES.filter(c=>c.g===grupoActivo).map(c=>`
+    <a class="canal" style="border-left-color:${color}" href="${c.u}" target="_blank" rel="noopener">
+      <span class="nom">${esc(c.n)}<span class="flecha">→</span></span>
+      <p class="desc">${esc(c.d)}</p>
+      <span class="origen">${esc(c.o)}</span>
+    </a>`).join('');
+}
+
+/* ============ 03 LANZADOR ============ */
+function portalesPara(q){
+  const e = encodeURIComponent(q);
+  return [
+    {nom:'Computrabajo', sub:'pe.computrabajo.com', url:'https://pe.computrabajo.com/trabajo-de-'+slugify(q), alt:gsearch('site:pe.computrabajo.com '+q)},
+    {nom:'LinkedIn', sub:'linkedin.com/jobs', url:'https://www.linkedin.com/jobs/search/?keywords='+e+'&location=Per%C3%BA', alt:gsearch('site:linkedin.com/jobs '+q+' Perú')},
+    {nom:'Empleos Minería', sub:'empleosmineria.pe', url:EM+'/trabajos?q='+e+'&sort=1-id#ofertas', alt:gsearch('site:empleosmineria.pe '+q)},
+    {nom:'Bumeran', sub:'bumeran.com.pe', url:'https://www.bumeran.com.pe/empleos-busqueda-'+slugify(q)+'.html', alt:gsearch('site:bumeran.com.pe '+q)},
+    {nom:'Indeed', sub:'pe.indeed.com', url:'https://pe.indeed.com/jobs?q='+e+'&l=', alt:gsearch('site:pe.indeed.com '+q)},
+    {nom:'Laborum', sub:'laborum.pe', url:'https://www.laborum.pe/empleos-busqueda-'+slugify(q)+'.html', alt:gsearch('site:laborum.pe '+q)},
+    {nom:'Jooble', sub:'pe.jooble.org', url:'https://pe.jooble.org/trabajo-'+slugify(q), alt:gsearch('site:pe.jooble.org '+q)},
+    {nom:'Páginas de empresas', sub:'sitios corporativos', url:gsearch(q+' Perú "trabaja con nosotros" minería OR energía'), alt:gsearch(q+' convocatoria 2026 Perú minería')}
+  ];
+}
+
+function pintarLanzador(){
+  const q = document.getElementById('q').value.trim();
+  if(!q){ document.getElementById('q').focus(); return; }
+  document.getElementById('qEco').textContent = '«'+q+'»';
+  document.getElementById('portales').innerHTML = portalesPara(q).map(p=>`
+    <div class="portal">
+      <div><div class="nom">${esc(p.nom)}</div><div class="sub">${esc(p.sub)}</div></div>
+      <div style="display:flex;gap:6px">
+        <a class="vinculo" href="${p.url}" target="_blank" rel="noopener">Abrir</a>
+        <a class="vinculo" href="${p.alt}" target="_blank" rel="noopener" title="Ruta alternativa">alt</a>
+      </div>
+    </div>`).join('');
+  document.getElementById('lanzador').classList.add('abierto');
+}
+
+/* ============ 04 EMPRESAS ============ */
+let catActiva = 'todas';
+
+// cuántos avisos descargados corresponden a cada empresa del directorio
+function avisosDe(emp){
+  const clave = sinTildes(emp.n.replace(/\s*[—(].*$/,'').split('/')[0].trim());
+  if(clave.length<4) return [];
+  return OFS.filter(o=>sinTildes(o.empresa).includes(clave));
+}
+
+function pintarTabsEmpresas(){
+  const items = [{k:'todas',nom:'Todas',color:'var(--texto)',n:EMPRESAS.length}]
+    .concat(Object.keys(CATS).map(k=>({k,nom:CATS[k].nom,color:CATS[k].color,n:EMPRESAS.filter(e=>e.cat===k).length})));
+  document.getElementById('tabsEmpresas').innerHTML = items.map(i=>`
+    <button class="tab" data-cat="${i.k}" aria-pressed="${i.k===catActiva}">
+      <span class="punto" style="background:${i.color}"></span>${i.nom}<span class="n">${i.n}</span>
+    </button>`).join('');
+  document.querySelectorAll('#tabsEmpresas .tab').forEach(t=>t.addEventListener('click',()=>{
+    catActiva = t.dataset.cat; pintarTabsEmpresas(); pintarEmpresas();
+  }));
+}
+
+function pintarEmpresas(){
+  const txt = document.getElementById('filtroTexto').value.trim().toLowerCase();
+  const lista = EMPRESAS.filter(f=>{
+    if(catActiva!=='todas' && f.cat!==catActiva) return false;
+    if(!txt) return true;
+    return (f.n+' '+f.d+' '+f.tags.join(' ')+' '+CATS[f.cat].nom).toLowerCase().includes(txt);
+  });
+  const cont = document.getElementById('rejilla');
+  if(!lista.length){ cont.innerHTML = '<div class="vacio">Ninguna empresa coincide. Prueba con un mineral, una región o parte del nombre.</div>'; return; }
+  cont.innerHTML = lista.map((f,i)=>{
+    const color = CATS[f.cat].color;
+    const nombre = f.n.replace(/\s*[—(].*$/,'').trim();
+    const vivas = avisosDe(f).length;
+    return `
+    <article class="fuente" style="border-left-color:${color}">
+      <div class="arriba"><h3>${esc(f.n)}</h3><span class="ley">${f.cat.slice(0,3).toUpperCase()}-${String(i+1).padStart(2,'0')}</span></div>
+      <p class="desc">${esc(f.d)}</p>
+      ${vivas?`<span class="vivas">▸ ${vivas} aviso${vivas>1?'s':''} suyo${vivas>1?'s':''} en la lista de arriba</span>`:''}
+      <div class="etiquetas">${f.tags.map(t=>`<span class="etiqueta">${esc(t)}</span>`).join('')}</div>
+      <div class="acciones">
+        ${f.portal?`<a class="vinculo oficial" href="${f.portal}" target="_blank" rel="noopener">Portal oficial</a>`:''}
+        ${vivas?`<button class="vinculo" data-ver="${esc(nombre)}">Ver sus avisos</button>`:''}
+        <a class="vinculo" href="https://pe.computrabajo.com/trabajo-de-${f.slug}" target="_blank" rel="noopener">Computrabajo</a>
+        <a class="vinculo" href="https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(nombre)}&location=Per%C3%BA" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </article>`;
+  }).join('');
+
+  cont.querySelectorAll('[data-ver]').forEach(b=>b.addEventListener('click',()=>{
+    catOferta='todas'; mostradas=0;
+    document.getElementById('oBuscar').value = b.dataset.ver;
+    document.getElementById('oRegion').value = '';
+    document.getElementById('oPlazo').value = '0';
+    pintarTabsOfertas(); pintarOfertas();
+    document.getElementById('tableroOfertas').scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+}
+
+/* ============ 05 SEGUIMIENTO ============ */
+const CLAVE='radar-minero:postulaciones';
+const ESTADOS=['Por postular','Postulado','En evaluación','Entrevista','Oferta','Descartado'];
+let seg=[], memoria={};
+const almacen={
+  async leer(k){
+    try{ if(window.storage){const r=await window.storage.get(k); return r?JSON.parse(r.value):null;} }catch(e){}
+    try{ const v=localStorage.getItem(k); if(v) return JSON.parse(v); }catch(e){}
+    return memoria[k]??null;
+  },
+  async guardar(k,v){
+    try{ if(window.storage){await window.storage.set(k,JSON.stringify(v)); return;} }catch(e){}
+    try{ localStorage.setItem(k,JSON.stringify(v)); return; }catch(e){}
+    memoria[k]=v;
+  }
+};
+
+function agregar(item){
+  seg.unshift(Object.assign({id:Date.now()+Math.random(), estado:'Por postular', fecha:hoy()}, item));
+  almacen.guardar(CLAVE,seg); pintarSeg();
+}
+
+function pintarSeg(){
+  const cont=document.getElementById('contSeg');
+  if(!seg.length){ cont.innerHTML='<div class="vacio">Aún no hay postulaciones registradas. Agrega una arriba o guarda un aviso desde la lista de ofertas.</div>'; return; }
+  cont.innerHTML=`<table class="tabla">
+    <thead><tr><th>Fecha</th><th>Empresa</th><th>Puesto</th><th>Fuente</th><th>Estado</th><th></th><th></th></tr></thead>
+    <tbody>${seg.map(s=>`
+      <tr data-id="${s.id}">
+        <td style="font-family:var(--mono);font-size:12px;color:var(--tenue)">${esc(s.fecha||'')}</td>
+        <td><strong>${esc(s.empresa||'—')}</strong></td>
+        <td>${esc(s.puesto||'—')}</td>
+        <td style="color:var(--tenue)">${esc(s.fuente||'—')}</td>
+        <td><select data-sel>${ESTADOS.map(e=>`<option ${e===s.estado?'selected':''}>${e}</option>`).join('')}</select></td>
+        <td>${s.link?`<a class="vinculo" href="${esc(s.link)}" target="_blank" rel="noopener">Aviso</a>`:''}</td>
+        <td><button class="borrar" data-del title="Quitar">✕</button></td>
+      </tr>`).join('')}</tbody></table>`;
+  cont.querySelectorAll('tr[data-id]').forEach(tr=>{
+    const id=tr.dataset.id;
+    tr.querySelector('[data-sel]').addEventListener('change',ev=>{
+      seg.find(x=>String(x.id)===id).estado=ev.target.value; almacen.guardar(CLAVE,seg);
+    });
+    tr.querySelector('[data-del]').addEventListener('click',()=>{
+      seg=seg.filter(x=>String(x.id)!==id); almacen.guardar(CLAVE,seg); pintarSeg();
+    });
+  });
+}
+
+function descargarCSV(){
+  if(!seg.length) return;
+  const filas=seg.map(s=>[s.fecha,s.empresa,s.puesto,s.fuente,s.estado,s.link].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','));
+  const blob=new Blob(['﻿'+'Fecha,Empresa,Puesto,Fuente,Estado,Enlace\n'+filas.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='postulaciones_'+hoy()+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* ============ ARRANQUE ============ */
+document.getElementById('chips').innerHTML = PERFILES.map(p=>`<button class="chip">${esc(p)}</button>`).join('');
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  document.getElementById('q').value=c.textContent; pintarLanzador();
+}));
+document.getElementById('btnPortales').addEventListener('click', pintarLanzador);
+document.getElementById('q').addEventListener('keydown', e=>{ if(e.key==='Enter') pintarLanzador(); });
+document.getElementById('filtroTexto').addEventListener('input', pintarEmpresas);
+document.getElementById('btnAgregar').addEventListener('click',()=>{
+  const emp=document.getElementById('sEmpresa').value.trim(), pue=document.getElementById('sPuesto').value.trim();
+  if(!emp && !pue){ document.getElementById('sEmpresa').focus(); return; }
+  agregar({empresa:emp,puesto:pue,fuente:document.getElementById('sFuente').value.trim(),link:document.getElementById('sLink').value.trim()});
+  ['sEmpresa','sPuesto','sFuente','sLink'].forEach(id=>document.getElementById(id).value='');
+});
+document.getElementById('btnCSV').addEventListener('click', descargarCSV);
+document.getElementById('btnLimpiar').addEventListener('click',()=>{ if(seg.length){ seg=[]; almacen.guardar(CLAVE,seg); pintarSeg(); } });
+
+document.getElementById('cEmpresas').textContent = EMPRESAS.length;
+
+arrancarOfertas();
+pintarTabsCanales(); pintarCanales();
+pintarTabsEmpresas(); pintarEmpresas();
+(async()=>{ seg=(await almacen.leer(CLAVE))||[]; pintarSeg(); })();
+</script>
+</body>
+</html>
